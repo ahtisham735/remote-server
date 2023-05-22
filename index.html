@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Server Access Control</title>
+</head>
+<body>
+  <h1>Server Access Control</h1>
+  <div >
+
+    <img id="screenshotContainer">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js">
+
+  </script>
+  <script>
+    const socket = io('http://192.168.10.6:5000');
+
+    const screenshotContainer = document.getElementById('screenshotContainer');
+    socket.on('screen-data', (screenshotData) => {
+      screenshotData=JSON.parse(screenshotData)
+  
+      screenshotContainer.src = `data:image/png;base64,${screenshotData['image']}`;
+  
+    });
+  </script>
+</body>
+</html>
