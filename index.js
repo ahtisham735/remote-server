@@ -18,6 +18,12 @@ app.get('/api/hello', (req, res) => {
 // Store connected clients
 const clients = new Map();
 app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://remote-server-mauve.vercel.app');
+  // You can also use '*' to allow requests from any origin, but it's less secure:
+  // res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 // Serve the HTML file with the form to input the client ID
 app.get('/', (req, res) => {
