@@ -11,8 +11,10 @@ app.use(express.static('public', {
       res.setHeader('Content-Type', 'application/javascript');
     }
   }
-}));
-
+}),cors());
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello, API!' });
+});
 // Store connected clients
 const clients = new Map();
 app.use(cors());
