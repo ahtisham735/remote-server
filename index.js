@@ -18,12 +18,29 @@ app.get('/api/hello', (req, res) => {
 // Store connected clients
 const clients = new Map();
 app.use(cors());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://remote-server-mauve.vercel.app');
-  // You can also use '*' to allow requests from any origin, but it's less secure:
-  // res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+const allowCors = fn => async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
+  return await fn(req, res)
+}
+
+const handler = (req, res) => {
+  const d = new Date()
+  res.end(d.toString())
+}
+
+module.exports = allowCors(handler)
 
 // Serve the HTML file with the form to input the client ID
 app.get('/', (req, res) => {
