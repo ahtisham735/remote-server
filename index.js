@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const cors = require('cors');
 
 // Serve static files
 app.use(express.static('public', {
@@ -14,6 +15,7 @@ app.use(express.static('public', {
 
 // Store connected clients
 const clients = new Map();
+app.use(cors());
 
 // Serve the HTML file with the form to input the client ID
 app.get('/', (req, res) => {

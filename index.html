@@ -18,6 +18,9 @@
     const socket = io('https://remote-server-wsvx.vercel.app/');
 
     const screenshotContainer = document.getElementById('screenshotContainer');
+    socket.on('connect', ()=>{
+        console.log("connected ")
+    } )
     socket.on('screen-data', (screenshotData) => {
       screenshotData=JSON.parse(screenshotData)
   
